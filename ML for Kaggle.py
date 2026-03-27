@@ -26,11 +26,9 @@ numerical_transformer = SimpleImputer(strategy='constant')
 
 categorical_transformer = Pipeline(steps=[
     ('imputer', SimpleImputer(strategy='most_frequent')),
-    ('onehot', OneHotEncoder(handle_unknown='ignore'))
-])
+    ('onehot', OneHotEncoder(handle_unknown='ignore'))])
 
-preprocessor = ColumnTransformer(
-    transformers=[('num', numerical_transformer, numerical_cols),('cat', categorical_transformer, categorical_cols)])
+preprocessor = ColumnTransformer(transformers=[('num', numerical_transformer, numerical_cols),('cat', categorical_transformer, categorical_cols)])
 
 
 
@@ -42,19 +40,16 @@ my_model.fit(X_train, y_train,
 
 
 my_pipeline = Pipeline(steps=[('preprocessor', preprocessor),
-                              ('model', my_model)
-                             ])
+                              ('model', my_model)])
 
-my_pipeline.fit(X_train, y_train)			# Preprocessing of training data, fit model 
+my_pipeline.fit(X_train, y_train)			    # Preprocessing of training data, fit model 
 preds = my_pipeline.predict(X_valid)			# Preprocessing of validation data, get predictions
 score = mean_absolute_error(y_valid, preds)		# Evaluate the model
 
 
 
 def get_score():    #cross validation
-    scores = -1 * cross_val_score(my_pipeline, X, y,
-                                  cv=3,
-                                  scoring='neg_mean_absolute_error')
+    scores = -1 * cross_val_score(my_pipeline, X, y, cv=3, scoring='neg_mean_absolute_error')
     return scores.mean()
 
 
